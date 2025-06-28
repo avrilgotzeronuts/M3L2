@@ -1,45 +1,48 @@
-# Import
-from flask import Flask, render_template
-
-
-app = Flask(__name__)
-
-def result_calculate(size, lights, device):
-    # Variabel yang memungkinkan penghitungan konsumsi energi peralatan
-    home_coef = 100
-    light_coef = 0.04
-    devices_coef = 5   
-    return size * home_coef + lights * light_coef + device * devices_coef 
-
-# Halaman pertama
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-# Halaman kedua
-@app.route('/<size>')
-def lights(size):
-    return render_template(
-                            'lights.html', 
-                            size=size
-                           )
-
-# Halaman ketiga
-@app.route('/<size>/<lights>')
-def electronics(size, lights):
-    return render_template(
-                            'electronics.html',
-                            size = size, 
-                            lights = lights                           
-                           )
-
-# Perhitungan
-@app.route('/<size>/<lights>/<device>')
-def end(size, lights, device):
-    return render_template('end.html', 
-                            result=result_calculate(int(size),
-                                                    int(lights), 
-                                                    int(device)
-                                                    )
-                        )
-app.run(debug=True)
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  >
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../static/css/style.css">
+  <title>Perhitungan efisiensi energi untuk rumah pintar</title>
+</head>
+<body>
+  <header class="header">
+    <div class="header__text">
+      <h1>Hitung efisiensi energi rumahmu!</h1>
+      <p>Ambil inisiatif dan selesaikan masalah konsumsi energi yang berlebihan</p>
+    </div>
+  </header>
+  <main>
+    {% block content %}
+    <h2 class="main__title">Pilih berapa banyak lampu yang ada di rumah kamu:</h2>
+    <ul class="list" id="list">
+      <li class="list__item">
+        <a href={{size + "/3" }}>
+          <img class="item__img" src="../static/img/light.svg" alt="light">
+          <span>2-4 lampu</span></a>
+      </li>
+      <!--Tugas #2 -->
+      <li class="list__item">
+        <a href="{{size + "/7"}}"> 
+          <img class="item__img" src="../static/img/light.svg" alt="light">
+          <span>4-6 lampu</span></a>
+      </li>
+      <li class="list__item">
+        <a href="{{size + "/10"}}">
+          <img class="item__img" src="../static/img/light.svg" alt="light">
+          <span>8+ lampu</span></a>
+      </li>
+      <li class="list__item">
+        <a href="">
+          <img class="item__img" src="../static/img/lights.png" alt="lights">
+          <span>Perancangan Alat yang ramah Lingkungan</span></a>
+      </li>
+    </ul>
+    {% endblock %}
+  </main>
+  <footer>
