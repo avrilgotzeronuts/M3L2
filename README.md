@@ -1,4 +1,3 @@
-# M3L2
 # Import
 from flask import Flask, render_template
 
